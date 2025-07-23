@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Order History - Farm Basket{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-5xl mx-auto">
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-8">Order History</h2>
+        {% if orders %}
+        <div class="bg-white shadow rounded-lg overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order #</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for order in orders %}
+                    <tr>
+                        <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">
+                            {{ order.order_number }} <span class="text-xs text-gray-500">({{ order.id }})</span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">{{ order.created_at|date:"M d, Y H:i" }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            {% if order.status == 'delivered' %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Delivered</span>
+                            {% elif order.status == 'pending' %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                            {% elif order.status == 'cancelled' %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Cancelled</span>
+                            {% else %}
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">{{ order.status|title }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-green-700 font-bold">₹{{ order.total_amount }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                            <a href="{% url 'orders:order_detail' order.id %}" class="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
+                                <i class="fas fa-eye mr-1"></i>View
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="bg-white shadow rounded-lg p-8 text-center">
+            <i class="fas fa-box-open text-gray-400 text-6xl mb-4"></i>
+            <h3 class="text-xl font-semibold text-gray-900 mb-2">No orders found</h3>
+            <p class="text-gray-600 mb-6">You have not placed any orders yet.</p>
+            <a href="{% url 'products:product_list' %}" class="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700">Shop Now</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

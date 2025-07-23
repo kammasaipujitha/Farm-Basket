@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register as Customer - Farm Basket{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-8">
+            <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-green-100">
+                <i class="fas fa-user text-green-600 text-2xl"></i>
+            </div>
+            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+                Create Customer Account
+            </h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Join Farm Basket to get fresh organic produce delivered to your doorstep
+            </p>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ user_form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">First Name</label>
+                        {{ user_form.first_name }}
+                        {% if user_form.first_name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ user_form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ user_form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Last Name</label>
+                        {{ user_form.last_name }}
+                        {% if user_form.last_name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ user_form.last_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div>
+                    <label for="{{ user_form.username.id_for_label }}" class="block text-sm font-medium text-gray-700">Username</label>
+                    {{ user_form.username }}
+                    {% if user_form.username.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ user_form.username.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ user_form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email</label>
+                    {{ user_form.email }}
+                    {% if user_form.email.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ user_form.email.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ user_form.phone_number.id_for_label }}" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    {{ user_form.phone_number }}
+                    {% if user_form.phone_number.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ user_form.phone_number.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ user_form.address.id_for_label }}" class="block text-sm font-medium text-gray-700">Address</label>
+                    {{ user_form.address }}
+                    {% if user_form.address.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ user_form.address.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ profile_form.preferred_delivery_address.id_for_label }}" class="block text-sm font-medium text-gray-700">Preferred Delivery Address</label>
+                    {{ profile_form.preferred_delivery_address }}
+                    {% if profile_form.preferred_delivery_address.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ profile_form.preferred_delivery_address.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ profile_form.delivery_instructions.id_for_label }}" class="block text-sm font-medium text-gray-700">Delivery Instructions (Optional)</label>
+                    {{ profile_form.delivery_instructions }}
+                    {% if profile_form.delivery_instructions.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ profile_form.delivery_instructions.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ user_form.password1.id_for_label }}" class="block text-sm font-medium text-gray-700">Password</label>
+                        {{ user_form.password1 }}
+                        {% if user_form.password1.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ user_form.password1.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ user_form.password2.id_for_label }}" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        {{ user_form.password2 }}
+                        {% if user_form.password2.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ user_form.password2.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                    <label for="terms" class="ml-2 block text-sm text-gray-900">
+                        I agree to the <a href="#" class="text-green-600 hover:text-green-500">Terms and Conditions</a>
+                    </label>
+                </div>
+
+                <div>
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Create Account
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an account? 
+                    <a href="{% url 'accounts:login' %}" class="font-medium text-green-600 hover:text-green-500">
+                        Sign in here
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

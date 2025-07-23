@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Order {{ order.order_number }} - Farm Basket{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+        <h2 class="text-3xl font-extrabold text-gray-900 mb-8">Order Details</h2>
+        <!-- Vertical Tracking Progress Bar -->
+        <div class="flex mb-8">
+          <div class="flex flex-col items-center mr-8">
+            <!-- Step 1: Order Confirmed -->
+            <div class="flex items-center">
+              <div class="w-6 h-6 rounded-full flex items-center justify-center
+                {% if order.status in 'pending confirmed processing shipped delivered' %} bg-green-500 text-white {% else %} bg-gray-300 text-gray-500 {% endif %}">
+                1
+              </div>
+              <span class="ml-3 text-sm font-semibold {% if order.status in 'pending confirmed processing shipped delivered' %} text-green-700 {% else %} text-gray-500 {% endif %}">Order Confirmed</span>
+            </div>
+            <div class="h-8 w-px bg-gray-300"></div>
+            <!-- Step 2: Shipped -->
+            <div class="flex items-center">
+              <div class="w-6 h-6 rounded-full flex items-center justify-center
+                {% if order.status in 'processing shipped delivered' %} bg-green-500 text-white {% else %} bg-gray-300 text-gray-500 {% endif %}">
+                2
+              </div>
+              <span class="ml-3 text-sm font-semibold {% if order.status in 'processing shipped delivered' %} text-green-700 {% else %} text-gray-500 {% endif %}">Shipped</span>
+            </div>
+            <div class="h-8 w-px bg-gray-300"></div>
+            <!-- Step 3: Out for Delivery -->
+            <div class="flex items-center">
+              <div class="w-6 h-6 rounded-full flex items-center justify-center
+                {% if order.status in 'shipped delivered' %} bg-green-500 text-white {% else %} bg-gray-300 text-gray-500 {% endif %}">
+                3
+              </div>
+              <span class="ml-3 text-sm font-semibold {% if order.status in 'shipped delivered' %} text-green-700 {% else %} text-gray-500 {% endif %}">Out for Delivery</span>
+            </div>
+            <div class="h-8 w-px bg-gray-300"></div>
+            <!-- Step 4: Delivered -->
+            <div class="flex items-center">
+              <div class="w-6 h-6 rounded-full flex items-center justify-center
+                {% if order.status == 'delivered' %} bg-green-500 text-white {% else %} bg-gray-300 text-gray-500 {% endif %}">
+                4
+              </div>
+              <span class="ml-3 text-sm font-semibold {% if order.status == 'delivered' %} text-green-700 {% else %} text-gray-500 {% endif %}">Delivered</span>
+            </div>
+          </div>
+          <div class="flex-1"></div>
+        </div>
+
+        <!-- Tracking Timeline -->
+        <div class="mb-8">
+          <h3 class="text-lg font-semibold mb-2">Order Tracking Details</h3>
+          <ul class="border-l-2 border-green-500 pl-4">
+            {% for event in order.tracking_events.all %}
+              <li class="mb-4">
+                <div class="text-sm font-bold text-green-700">{{ event.status }}</div>
+                {% if event.location %}
+                  <div class="text-xs text-gray-500">Location: {{ event.location }}</div>
+                {% endif %}
+                <div class="text-xs text-gray-400">{{ event.timestamp|date:'M d, Y H:i' }}</div>
+              </li>
+            {% empty %}
+              <li>No tracking events yet.</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="bg-white shadow rounded-lg p-8 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <div class="text-sm text-gray-500">Order #</div>
+                    <div class="text-xl font-bold text-gray-900">{{ order.order_number }}</div>
+                </div>
+                <div>
+                    {% if order.status == 'delivered' %}
+                        <span class="px-3 py-1 rounded-full bg-green-100 text-green-800 text-sm font-semibold">Delivered</span>
+                    {% elif order.status == 'pending' %}
+                        <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-800 text-sm font-semibold">Pending</span>
+                    {% elif order.status == 'cancelled' %}
+                        <span class="px-3 py-1 rounded-full bg-red-100 text-red-800 text-sm font-semibold">Cancelled</span>
+                    {% else %}
+                        <span class="px-3 py-1 rounded-full bg-gray-100 text-gray-800 text-sm font-semibold">{{ order.status|title }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <!-- Order Status Tracking -->
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Order Status History</h3>
+                {% if order.status_history.all %}
+                    <ul class="divide-y divide-gray-200">
+                        {% for entry in order.status_history.all|dictsortreversed:"changed_at" %}
+                        <li class="py-2 flex items-center justify-between">
+                            <span class="font-medium">{{ entry.status|title }}</span>
+                            <span class="text-xs text-gray-500">{{ entry.changed_at|date:"M d, Y H:i" }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <div class="text-gray-400">No status history available.</div>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <div class="text-sm text-gray-500">Order Date</div>
+                <div class="text-gray-900">{{ order.created_at|date:"M d, Y H:i" }}</div>
+            </div>
+            <div class="mb-4">
+                <div class="text-sm text-gray-500">Delivery Address</div>
+                <div class="text-gray-900">{{ order.delivery_address }}</div>
+                {% if order.delivery_instructions %}
+                    <div class="text-xs text-gray-500 mt-1">Instructions: {{ order.delivery_instructions }}</div>
+                {% endif %}
+            </div>
+            <div class="mb-4">
+                <div class="text-sm text-gray-500 font-semibold mb-1">Parcel Tracking</div>
+                <div class="text-base text-blue-700 font-bold">
+                  {% if order.status == 'pending' or order.status == 'confirmed' %}
+                    <span class="inline-block px-3 py-1 rounded-full bg-yellow-100 text-yellow-800">Order Confirmed</span>
+                  {% elif order.status == 'processing' %}
+                    <span class="inline-block px-3 py-1 rounded-full bg-blue-100 text-blue-800">Shipped</span>
+                  {% elif order.status == 'shipped' %}
+                    <span class="inline-block px-3 py-1 rounded-full bg-indigo-100 text-indigo-800">Out for Delivery</span>
+                  {% elif order.status == 'delivered' %}
+                    <span class="inline-block px-3 py-1 rounded-full bg-green-100 text-green-800">Delivered</span>
+                  {% elif order.status == 'cancelled' %}
+                    <span class="inline-block px-3 py-1 rounded-full bg-red-100 text-red-800">Order Cancelled</span>
+                  {% else %}
+                    <span class="inline-block px-3 py-1 rounded-full bg-gray-100 text-gray-800">Status not available</span>
+                  {% endif %}
+                </div>
+            </div>
+            <div class="mb-4">
+                <div class="text-sm text-gray-500">Total Amount</div>
+                <div class="text-green-700 font-bold text-lg">₹{{ order.total_amount }}</div>
+            </div>
+        </div>
+        <div class="bg-white shadow rounded-lg p-8 mb-8">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Order Items</h3>
+            <ul class="divide-y divide-gray-200">
+                {% for item in order.items.all %}
+                <li class="py-4 flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        {% if item.product.image %}
+                            <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="h-8 w-8 rounded object-cover">
+                        {% endif %}
+                        <span>{{ item.product.name }}</span>
+                        <span class="text-xs text-gray-500">x{{ item.quantity }}</span>
+                    </div>
+                    <span class="font-semibold">₹{{ item.total_price }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% if order.status in 'pending,confirmed' %}
+        <form method="post" action="{% url 'orders:cancel_order' order.id %}" class="text-right">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-md font-semibold hover:bg-red-700">
+                <i class="fas fa-times mr-2"></i>Cancel Order
+            </button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

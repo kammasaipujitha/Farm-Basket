@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Farm Basket - Fresh Organic Produce{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .hero-bg {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-green-600 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-leaf text-white text-2xl mr-2"></i>
+                        <span class="text-white font-bold text-xl">Farm Basket</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'home' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                    <a href="{% url 'products:product_list' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">Products</a>
+                    <a href="{% url 'farmers:farmer_list' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">Farmers</a>
+                    <a href="{% url 'products:live_market_price' %}" class="text-white hover:text-yellow-200 px-3 py-2 rounded-md text-sm font-medium">Market Prices</a>
+                    <a href="{% url 'orders:payment' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">Payment</a>
+                    {% if user.is_authenticated %}
+                        {% if user.user_type == 'customer' %}
+                            <a href="{% url 'orders:cart' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium relative">
+                                <i class="fas fa-shopping-cart mr-1"></i>Cart
+                                {% if cart_count and cart_count > 0 %}
+                                    <span class="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full transform translate-x-1/2 -translate-y-1/2">{{ cart_count }}</span>
+                                {% endif %}
+                            </a>
+                            <a href="{% url 'orders:order_history' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">My Orders</a>
+                        {% elif user.user_type == 'farmer' %}
+                            <a href="{% url 'farmers:dashboard' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
+                            <a href="{% url 'products:my_products' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">My Products</a>
+                        {% elif user.user_type == 'admin' %}
+                            <a href="{% url 'admin:index' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">Admin</a>
+                        {% endif %}
+                        <div class="relative">
+                            <button id="profile-dropdown" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">
+                                <i class="fas fa-user mr-1"></i>{{ user.username }}
+                            </button>
+                            <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                                <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="text-white hover:text-green-200 px-3 py-2 rounded-md text-sm font-medium">Login</a>
+                        <a href="{% url 'accounts:register' %}" class="bg-white text-green-600 hover:bg-green-50 px-4 py-2 rounded-md text-sm font-medium">Register</a>
+                    {% endif %}
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-white hover:text-green-200 focus:outline-none focus:text-green-200">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="{% url 'home' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                <a href="{% url 'products:product_list' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Products</a>
+                <a href="{% url 'farmers:farmer_list' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Farmers</a>
+                <a href="{% url 'products:live_market_price' %}" class="text-white hover:text-yellow-200 block px-3 py-2 rounded-md text-base font-medium">Market Prices</a>
+                <a href="{% url 'orders:payment' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Payment</a>
+                {% if user.is_authenticated %}
+                    {% if user.user_type == 'customer' %}
+                        <a href="{% url 'orders:cart' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Cart</a>
+                        <a href="{% url 'orders:order_history' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">My Orders</a>
+                    {% elif user.user_type == 'farmer' %}
+                        <a href="{% url 'farmers:dashboard' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Dashboard</a>
+                        <a href="{% url 'products:my_products' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">My Products</a>
+                    {% endif %}
+                    <a href="{% url 'accounts:profile' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Profile</a>
+                    <a href="{% url 'accounts:logout' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Logout</a>
+                {% else %}
+                    <a href="{% url 'accounts:login' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Login</a>
+                    <a href="{% url 'accounts:register' %}" class="text-white hover:text-green-200 block px-3 py-2 rounded-md text-base font-medium">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Messages -->
+    {% if messages %}
+        <div id="toast-message" class="fixed top-6 right-6 z-50">
+            {% for message in messages %}
+                <div class="mb-2 px-6 py-3 rounded shadow-lg bg-green-600 text-white text-lg animate-fade-in-out">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+        <style>
+            @keyframes fade-in-out {
+                0% { opacity: 0; transform: translateY(-20px);}
+                10% { opacity: 1; transform: translateY(0);}
+                90% { opacity: 1; transform: translateY(0);}
+                100% { opacity: 0; transform: translateY(-20px);}
+            }
+            .animate-fade-in-out {
+                animation: fade-in-out 3s forwards;
+            }
+        </style>
+        <script>
+            setTimeout(function() {
+                var toast = document.getElementById('toast-message');
+                if (toast) toast.style.display = 'none';
+            }, 3000);
+        </script>
+    {% endif %}
+
+    <!-- Main Content -->
+    <main class="min-h-screen">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Farm Basket</h3>
+                    <p class="text-gray-300">Connecting farmers directly to consumers with fresh, organic produce.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'home' %}" class="text-gray-300 hover:text-white">Home</a></li>
+                        <li><a href="{% url 'products:product_list' %}" class="text-gray-300 hover:text-white">Products</a></li>
+                        <li><a href="{% url 'farmers:farmer_list' %}" class="text-gray-300 hover:text-white">Farmers</a></li>
+                        <li><a href="{% url 'products:live_market_price' %}" class="text-gray-300 hover:text-yellow-700">Market Prices</a></li>
+                        <li><a href="{% url 'orders:payment' %}" class="text-gray-300 hover:text-white">Payment</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Support</h4>
+                    <ul class="space-y-2">
+                        <li><a href="{% url 'faq' %}" class="text-gray-300 hover:text-white">FAQ</a></li>
+                        <li><a href="{% url 'help_center' %}" class="text-gray-300 hover:text-white">Help Center</a></li>
+                        <li><a href="{% url 'feedback:feedback_form' %}" class="text-gray-300 hover:text-white">Feedback</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Connect</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-facebook text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-twitter text-xl"></i></a>
+                        <a href="#" class="text-gray-300 hover:text-white"><i class="fab fa-instagram text-xl"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+                <p class="text-gray-300">&copy; 2024 Farm Basket. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // Profile dropdown toggle
+        document.getElementById('profile-dropdown').addEventListener('click', function() {
+            document.getElementById('profile-menu').classList.toggle('hidden');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const dropdown = document.getElementById('profile-menu');
+            const button = document.getElementById('profile-dropdown');
+            
+            if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html> 

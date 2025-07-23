@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-3xl mx-auto mt-8">
+  <h2 class="text-2xl font-bold mb-6">Reviews</h2>
+  <div class="space-y-6">
+    {% for review in reviews %}
+      <div class="bg-white rounded-lg shadow p-6">
+        <div class="flex items-center mb-2">
+          <span class="font-semibold mr-2">{{ review.user.get_full_name }}</span>
+          <span class="text-yellow-500">{% for i in "12345"|slice:":review.rating" %}★{% endfor %}{% for i in "12345"|slice:"review.rating:" %}<span class="text-gray-300">★</span>{% endfor %}</span>
+          <span class="ml-4 text-gray-500 text-sm">{{ review.created_at|date:"M d, Y" }}</span>
+        </div>
+        <div class="mb-2 text-gray-700">{{ review.comment }}</div>
+        {% if review.user == user %}
+          <div class="flex gap-2 mt-2">
+            <a href="{% url 'edit_review' review.id %}" class="text-blue-500 hover:underline">Edit</a>
+            <a href="{% url 'delete_review' review.id %}" class="text-red-500 hover:underline">Delete</a>
+          </div>
+        {% endif %}
+      </div>
+    {% empty %}
+      <div class="text-center text-gray-500">No reviews yet.</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %} 

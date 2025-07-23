@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-5xl mx-auto mt-8">
+  <h2 class="text-2xl font-bold mb-6">Our Farmers</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {% for farmer in farmers %}
+      <div class="bg-white rounded-lg shadow p-6 flex flex-col items-center">
+        <div class="text-lg font-semibold mb-2">{{ farmer.get_full_name }}</div>
+        <div class="text-gray-600 mb-2">{{ farmer.farm_name }}</div>
+        <a href="{% url 'farmers:farmer_profile' farmer.id %}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">View Profile</a>
+      </div>
+    {% empty %}
+      <div class="col-span-3 text-center text-gray-500">No farmers found.</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %} 

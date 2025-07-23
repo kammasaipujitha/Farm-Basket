@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Live Market Prices - Farm Basket{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header Section -->
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">Live Market Prices</h1>
+        <p class="text-lg text-gray-600 mb-4">Real-time prices for vegetables, fruits, and herbs from major markets across India</p>
+        <div class="flex items-center justify-center space-x-4 text-sm text-gray-500">
+            <span><i class="fas fa-clock mr-1"></i>Last Updated: {{ last_updated }}</span>
+            <span><i class="fas fa-sync-alt mr-1"></i>Prices updated daily</span>
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="flex justify-center mb-8">
+        <div class="bg-gray-100 rounded-lg p-1">
+            <button onclick="showCategory('all')" class="filter-btn active px-4 py-2 rounded-md text-sm font-medium transition-colors" data-category="all">
+                All Products
+            </button>
+            <button onclick="showCategory('vegetable')" class="filter-btn px-4 py-2 rounded-md text-sm font-medium transition-colors" data-category="vegetable">
+                <i class="fas fa-carrot mr-2"></i>Vegetables
+            </button>
+            <button onclick="showCategory('fruit')" class="filter-btn px-4 py-2 rounded-md text-sm font-medium transition-colors" data-category="fruit">
+                <i class="fas fa-apple-alt mr-2"></i>Fruits
+            </button>
+            <button onclick="showCategory('herb')" class="filter-btn px-4 py-2 rounded-md text-sm font-medium transition-colors" data-category="herb">
+                <i class="fas fa-seedling mr-2"></i>Herbs
+            </button>
+        </div>
+    </div>
+
+    <!-- Market Prices by Category -->
+    {% for product_type, items in prices_by_type.items %}
+    <div class="category-section mb-8" data-category="{{ product_type }}">
+        <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-green-500 to-green-600 px-6 py-4">
+                <h2 class="text-xl font-semibold text-white flex items-center">
+                    {% if product_type == 'vegetable' %}
+                        <i class="fas fa-carrot mr-3"></i>Vegetables
+                    {% elif product_type == 'fruit' %}
+                        <i class="fas fa-apple-alt mr-3"></i>Fruits
+                    {% elif product_type == 'herb' %}
+                        <i class="fas fa-seedling mr-3"></i>Herbs
+                    {% endif %}
+                    <span class="ml-auto text-sm bg-white bg-opacity-20 px-2 py-1 rounded">{{ items|length }} items</span>
+                </h2>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price (₹/kg)</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Market Source</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for item in items %}
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    {% if item.product.image %}
+                                        <img class="h-10 w-10 rounded-full object-cover mr-3" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                    {% else %}
+                                        <div class="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                            {% if product_type == 'vegetable' %}
+                                                <i class="fas fa-carrot text-green-600"></i>
+                                            {% elif product_type == 'fruit' %}
+                                                <i class="fas fa-apple-alt text-green-600"></i>
+                                            {% elif product_type == 'herb' %}
+                                                <i class="fas fa-seedling text-green-600"></i>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                    <div>
+                                        <div class="text-sm font-medium text-gray-900">{{ item.product.name }}</div>
+                                        <div class="text-sm text-gray-500">{{ item.product.product_type|title }}</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.product.category.name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-lg font-semibold text-green-600">₹{{ item.price.price }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ item.price.source }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ item.price.date|date:"M d, Y" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="px-6 py-8 text-center text-gray-500">
+                                <i class="fas fa-info-circle text-2xl mb-2"></i>
+                                <p>No {{ product_type }} prices available.</p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="text-center py-12">
+        <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 max-w-md mx-auto">
+            <i class="fas fa-exclamation-triangle text-yellow-600 text-3xl mb-4"></i>
+            <h3 class="text-lg font-semibold text-yellow-800 mb-2">No Market Prices Available</h3>
+            <p class="text-yellow-700 mb-4">Market prices haven't been updated yet. Please check back later or contact an administrator.</p>
+            <a href="{% url 'products:product_list' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700">
+                <i class="fas fa-shopping-cart mr-2"></i>Browse Products
+            </a>
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Information Section -->
+    <div class="mt-12 bg-blue-50 border border-blue-200 rounded-lg p-6">
+        <h3 class="text-lg font-semibold text-blue-900 mb-3 flex items-center">
+            <i class="fas fa-info-circle mr-2"></i>About Market Prices
+        </h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-blue-800">
+            <div>
+                <h4 class="font-medium mb-1">Price Sources</h4>
+                <p>Prices are sourced from major APMC markets and mandis across India including Mumbai, Delhi, Bangalore, Chennai, and more.</p>
+            </div>
+            <div>
+                <h4 class="font-medium mb-1">Update Frequency</h4>
+                <p>Prices are updated daily to reflect current market conditions and seasonal variations.</p>
+            </div>
+            <div>
+                <h4 class="font-medium mb-1">Price Variations</h4>
+                <p>Prices may vary based on quality, season, location, and market demand. These are average wholesale prices.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.filter-btn {
+    color: #6B7280;
+    background: transparent;
+}
+
+.filter-btn.active {
+    color: #059669;
+    background: white;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.category-section {
+    display: block;
+}
+
+.category-section.hidden {
+    display: none;
+}
+</style>
+
+<script>
+function showCategory(category) {
+    // Update button states
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    // Show/hide sections
+    document.querySelectorAll('.category-section').forEach(section => {
+        if (category === 'all' || section.dataset.category === category) {
+            section.classList.remove('hidden');
+        } else {
+            section.classList.add('hidden');
+        }
+    });
+}
+</script>
+{% endblock %} 

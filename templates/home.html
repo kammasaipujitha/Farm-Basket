@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Farm Basket - Fresh Organic Produce from Local Farmers{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-bg text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-6xl font-bold mb-6">
+            Fresh Organic Produce
+            <span class="block text-green-300">Direct from Farm</span>
+        </h1>
+        <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+            Connect with local farmers and get the freshest organic vegetables and fruits delivered to your doorstep.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'products:product_list' %}" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                Shop Now
+            </a>
+            <a href="{% url 'accounts:register' %}" class="bg-white text-green-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                Join as Farmer
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Live Market Price Highlight -->
+<section class="py-12 bg-yellow-50 border-t border-b border-yellow-200">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-2xl font-bold text-yellow-700 mb-2">Live Market Prices</h2>
+        <p class="text-yellow-800 mb-4">Stay updated with the latest market prices for all major vegetables and fruits. Make informed buying and selling decisions!</p>
+        <a href="{% url 'products:live_market_price' %}" class="inline-block bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-semibold px-6 py-3 rounded-lg shadow transition duration-300">View Live Market Prices</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-6">Why Choose Farm Basket?</h2>
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                We bridge the gap between farmers and consumers, ensuring fresh, organic produce reaches your table.
+            </p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div class="text-center p-8 rounded-lg hover:bg-gray-50 transition duration-300">
+                <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-leaf text-green-600 text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">100% Organic</h3>
+                <p class="text-gray-600 text-lg leading-relaxed">All our products are certified organic and grown without harmful pesticides.</p>
+            </div>
+            
+            <div class="text-center p-8 rounded-lg hover:bg-gray-50 transition duration-300">
+                <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-truck text-green-600 text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Fresh Delivery</h3>
+                <p class="text-gray-600 text-lg leading-relaxed">Get fresh produce delivered directly from farm to your doorstep within hours.</p>
+            </div>
+            
+            <div class="text-center p-8 rounded-lg hover:bg-gray-50 transition duration-300">
+                <div class="bg-green-100 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-users text-green-600 text-3xl"></i>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-900 mb-4">Support Local Farmers</h3>
+                <p class="text-gray-600 text-lg leading-relaxed">Help local farmers grow their business while getting the best quality produce.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Shop by Category</h2>
+            <p class="text-lg text-gray-600">Explore our wide range of fresh organic produce</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                <i class="fas fa-carrot text-4xl text-orange-500 mb-4"></i>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Vegetables</h3>
+                <p class="text-gray-600 text-sm">Fresh organic vegetables</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                <i class="fas fa-apple-alt text-4xl text-red-500 mb-4"></i>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Fruits</h3>
+                <p class="text-gray-600 text-sm">Seasonal fresh fruits</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                <i class="fas fa-seedling text-4xl text-green-500 mb-4"></i>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Herbs</h3>
+                <p class="text-gray-600 text-sm">Fresh aromatic herbs</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 text-center hover:shadow-lg transition duration-300">
+                <div class="bg-yellow-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-seedling text-yellow-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Grains</h3>
+                <p class="text-gray-600 text-sm">Coming Soon</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <p class="text-lg text-gray-600">Simple steps to get fresh produce</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="text-center">
+                <div class="bg-green-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">1</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Browse Products</h3>
+                <p class="text-gray-600">Explore our wide selection of fresh organic produce from local farmers.</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-green-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">2</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Place Order</h3>
+                <p class="text-gray-600">Add items to your cart and place your order with secure payment.</p>
+            </div>
+            
+            <div class="text-center">
+                <div class="bg-green-600 text-white w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4 text-xl font-bold">3</div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2">Get Delivery</h3>
+                <p class="text-gray-600">Receive fresh produce delivered directly to your doorstep.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<!-- <section class="py-16 bg-green-600">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold text-white mb-4">Ready to Get Started?</h2>
+        <p class="text-xl text-green-100 mb-8">
+            Join thousands of customers who trust Farm Basket for their daily organic produce needs.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'accounts:register' %}" class="bg-white text-green-600 hover:bg-gray-100 px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                Sign Up Now
+            </a>
+            <a href="{% url 'products:product_list' %}" class="border-2 border-white text-white hover:bg-white hover:text-green-600 px-8 py-3 rounded-lg text-lg font-semibold transition duration-300">
+                Browse Products
+            </a>
+        </div>
+    </div> -->
+</section>
+{% endblock %} 

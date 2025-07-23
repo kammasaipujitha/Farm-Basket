@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-xl mx-auto bg-white rounded-lg shadow p-8 mt-8">
+  <h2 class="text-2xl font-bold mb-4">Payment</h2>
+  <div class="mb-6">
+    <h3 class="font-semibold mb-2">Order Summary</h3>
+    <div class="bg-gray-50 p-4 rounded mb-2">
+      <!-- Placeholder for order summary -->
+      <p class="text-gray-700">Order #{{ order.id }} | Total: ₹{{ order.total_amount }}</p>
+    </div>
+  </div>
+  <div class="mb-6">
+    <h3 class="font-semibold mb-2">Select Payment Method</h3>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label class="inline-flex items-center">
+          <input type="radio" name="payment_method" value="card" class="form-radio" checked>
+          <span class="ml-2">Credit/Debit Card</span>
+        </label>
+      </div>
+      <div class="mb-4">
+        <label class="inline-flex items-center">
+          <input type="radio" name="payment_method" value="upi" class="form-radio">
+          <span class="ml-2">UPI</span>
+        </label>
+      </div>
+      <div class="mb-4">
+        <label class="inline-flex items-center">
+          <input type="radio" name="payment_method" value="cod" class="form-radio">
+          <span class="ml-2">Cash on Delivery</span>
+        </label>
+      </div>
+      <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Pay Now</button>
+    </form>
+  </div>
+</div>
+{% endblock %} 

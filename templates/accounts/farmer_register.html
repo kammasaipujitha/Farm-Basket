@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register as Farmer - Farm Basket{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-2xl mx-auto">
+        <div class="text-center mb-8">
+            <div class="mx-auto h-12 w-12 flex items-center justify-center rounded-full bg-green-100">
+                <i class="fas fa-tractor text-green-600 text-2xl"></i>
+            </div>
+            <h2 class="mt-6 text-3xl font-extrabold text-gray-900">
+                Register as Farmer
+            </h2>
+            <p class="mt-2 text-sm text-gray-600">
+                Join Farm Basket to sell your fresh organic produce directly to customers
+            </p>
+        </div>
+
+        <div class="bg-white shadow-lg rounded-lg p-8">
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ user_form.first_name.id_for_label }}" class="block text-sm font-medium text-gray-700">First Name</label>
+                        {{ user_form.first_name }}
+                        {% if user_form.first_name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ user_form.first_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ user_form.last_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Last Name</label>
+                        {{ user_form.last_name }}
+                        {% if user_form.last_name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ user_form.last_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div>
+                    <label for="{{ user_form.username.id_for_label }}" class="block text-sm font-medium text-gray-700">Username</label>
+                    {{ user_form.username }}
+                    {% if user_form.username.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ user_form.username.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ user_form.email.id_for_label }}" class="block text-sm font-medium text-gray-700">Email</label>
+                    {{ user_form.email }}
+                    {% if user_form.email.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ user_form.email.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ user_form.phone_number.id_for_label }}" class="block text-sm font-medium text-gray-700">Phone Number</label>
+                    {{ user_form.phone_number }}
+                    {% if user_form.phone_number.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ user_form.phone_number.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ user_form.address.id_for_label }}" class="block text-sm font-medium text-gray-700">Personal Address</label>
+                    {{ user_form.address }}
+                    {% if user_form.address.errors %}
+                        <p class="mt-1 text-sm text-red-600">{{ user_form.address.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Farm Information -->
+                <div class="border-t border-gray-200 pt-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Farm Information</h3>
+                    
+                    <div>
+                        <label for="{{ profile_form.farm_name.id_for_label }}" class="block text-sm font-medium text-gray-700">Farm Name</label>
+                        {{ profile_form.farm_name }}
+                        {% if profile_form.farm_name.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ profile_form.farm_name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-4">
+                        <label for="{{ profile_form.farm_address.id_for_label }}" class="block text-sm font-medium text-gray-700">Farm Address</label>
+                        {{ profile_form.farm_address }}
+                        {% if profile_form.farm_address.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ profile_form.farm_address.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="mt-4">
+                        <label for="{{ profile_form.farm_description.id_for_label }}" class="block text-sm font-medium text-gray-700">Farm Description</label>
+                        {{ profile_form.farm_description }}
+                        {% if profile_form.farm_description.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ profile_form.farm_description.errors.0 }}</p>
+                        {% endif %}
+                        <p class="mt-1 text-sm text-gray-500">Describe your farming practices, organic certification, and what you grow.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                        <div>
+                            <label for="{{ profile_form.farm_certification.id_for_label }}" class="block text-sm font-medium text-gray-700">Farm Certification (Optional)</label>
+                            {{ profile_form.farm_certification }}
+                            {% if profile_form.farm_certification.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ profile_form.farm_certification.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div>
+                            <label for="{{ profile_form.years_of_experience.id_for_label }}" class="block text-sm font-medium text-gray-700">Years of Experience</label>
+                            {{ profile_form.years_of_experience }}
+                            {% if profile_form.years_of_experience.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ profile_form.years_of_experience.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ user_form.password1.id_for_label }}" class="block text-sm font-medium text-gray-700">Password</label>
+                        {{ user_form.password1 }}
+                        {% if user_form.password1.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ user_form.password1.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <label for="{{ user_form.password2.id_for_label }}" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        {{ user_form.password2 }}
+                        {% if user_form.password2.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ user_form.password2.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="bg-yellow-50 border border-yellow-200 rounded-md p-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fas fa-info-circle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-yellow-800">Important Notice</h3>
+                            <div class="mt-2 text-sm text-yellow-700">
+                                <p>Your farmer account will be reviewed by our admin team before approval. This process typically takes 1-2 business days.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    <input id="terms" name="terms" type="checkbox" required class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                    <label for="terms" class="ml-2 block text-sm text-gray-900">
+                        I agree to the <a href="#" class="text-green-600 hover:text-green-500">Terms and Conditions</a> and confirm that all information provided is accurate.
+                    </label>
+                </div>
+
+                <div>
+                    <button type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                        <i class="fas fa-tractor mr-2"></i>
+                        Register as Farmer
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an account? 
+                    <a href="{% url 'accounts:login' %}" class="font-medium text-green-600 hover:text-green-500">
+                        Sign in here
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

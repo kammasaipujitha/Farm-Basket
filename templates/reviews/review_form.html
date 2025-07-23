@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-xl mx-auto bg-white rounded-lg shadow p-8 mt-8">
+  <h2 class="text-2xl font-bold mb-4">{{ form_title|default:'Add Review' }}</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-4">
+      <label class="block font-semibold mb-1">Rating</label>
+      <select name="rating" class="w-full border rounded px-3 py-2" required>
+        <option value="">Select rating</option>
+        {% for i in "12345" %}
+          <option value="{{ i }}" {% if form.rating.value|stringformat:'s' == i %}selected{% endif %}>{{ i }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="mb-4">
+      <label class="block font-semibold mb-1">Comment</label>
+      <textarea name="comment" rows="4" class="w-full border rounded px-3 py-2" required>{{ form.comment.value }}</textarea>
+    </div>
+    <div class="flex gap-4 mt-6">
+      <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Submit</button>
+      <a href="{{ cancel_url|default:'#' }}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %} 

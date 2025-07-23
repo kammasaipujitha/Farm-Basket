@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-4xl mx-auto mt-8">
+  <h2 class="text-2xl font-bold mb-6">Farmer Dashboard</h2>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-green-100 rounded-lg p-6 text-center">
+      <div class="text-3xl font-bold">{{ product_count }}</div>
+      <div class="text-gray-700">My Products</div>
+    </div>
+    <div class="bg-blue-100 rounded-lg p-6 text-center">
+      <div class="text-3xl font-bold">{{ order_count }}</div>
+      <div class="text-gray-700">Orders Received</div>
+    </div>
+    <div class="bg-yellow-100 rounded-lg p-6 text-center">
+      <div class="text-3xl font-bold">₹{{ total_earnings }}</div>
+      <div class="text-gray-700">Total Earnings</div>
+    </div>
+  </div>
+  <div class="flex flex-col md:flex-row gap-4">
+    <a href="{% url 'my_products' %}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded text-center">Manage My Products</a>
+    <a href="{% url 'farmer_orders' %}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded text-center">View Orders</a>
+  </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="max-w-3xl mx-auto mt-8">
+  <h2 class="text-2xl font-bold mb-6">Help Center</h2>
+  <div class="space-y-6">
+    <div>
+      <h3 class="font-semibold text-lg mb-2">Account Issues</h3>
+      <p class="text-gray-700">For login, registration, or profile issues, visit your profile page or contact support.</p>
+    </div>
+    <div>
+      <h3 class="font-semibold text-lg mb-2">Order Issues</h3>
+      <p class="text-gray-700">For problems with orders, visit your order history or use the feedback form to report an issue.</p>
+    </div>
+    <div>
+      <h3 class="font-semibold text-lg mb-2">Product Listings</h3>
+      <p class="text-gray-700">Farmers can manage their products from the dashboard. Customers can browse and search products easily.</p>
+    </div>
+    <div>
+      <h3 class="font-semibold text-lg mb-2">Payments</h3>
+      <p class="text-gray-700">All payments are processed securely. For payment issues, contact support.</p>
+    </div>
+    <div>
+      <a href="{% url 'feedback:feedback_form' %}" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Submit Feedback</a>
+    </div>
+  </div>
+</div>
+{% endblock %} 
