@@ -1,3 +1,4 @@
+ HEAD
 # Farm Basket - Fresh Organic Produce Platform
 
 Farm Basket is a comprehensive e-commerce platform that connects local farmers directly with consumers, enabling the sale and purchase of fresh, organic produce. Built with Django, PostgreSQL, and modern frontend technologies.
@@ -239,3 +240,6 @@ For support and questions:
 ---
 
 **Farm Basket** - Connecting farmers and consumers for fresh, organic produce! 🌱 
+# Farm-Basket
+Farm Basket – A Multi-Vendor Organic Marketplace for Direct Farmer-to-Consumer Sales
+e666f528f504af91cb8e7ddb13d48c5e6b98863b
