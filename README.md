@@ -228,13 +228,6 @@ For support and questions:
 - Order processing
 - Admin panel
 
-## 📞 Contact
-
-- **Project Link**: [https://github.com/yourusername/farm-basket](https://github.com/yourusername/farm-basket)
-- **Email**: support@farmbasket.com
-
----
-
 **Farm Basket** - Connecting farmers and consumers for fresh, organic produce! 🌱 
 # Farm-Basket
 Farm Basket – A Multi-Vendor Organic Marketplace for Direct Farmer-to-Consumer Sales
